@@ -52,3 +52,28 @@ SELECT incidnt_num,
   FROM tutorial.sf_crime_incidents_2014_01
 
 
+
+/* Write a query that counts the number of incidents reported by week. Cast the week as a date to get rid of the hours/minutes/seconds. */
+
+SELECT COUNT(incidnt_num),DATE_TRUNC('week'   , cleaned_date) AS Week 
+FROM tutorial.sf_crime_incidents_cleandate 
+GROUP by Week 
+ORDER BY Week
+
+
+/* Write a query that shows exactly how long ago each indicent was reported. Assume that the dataset is in Pacific Standard Time (UTC - 8).*/
+
+SELECT incidnt_num,
+       cleaned_date,
+       NOW() AT TIME ZONE 'PST' AS now,
+       NOW() AT TIME ZONE 'PST' - cleaned_date AS time_ago 
+  FROM tutorial.sf_crime_incidents_cleandate
+
+
+/* Write a query to find  the missing values in the description columns */ 
+
+SELECT incidnt_num,
+       descript,
+       COALESCE(descript, 'No Description')
+  FROM tutorial.sf_crime_incidents_cleandate
+ ORDER BY descript DESC
